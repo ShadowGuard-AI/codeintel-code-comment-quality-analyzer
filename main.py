@@ -79,14 +79,16 @@ class CommentQualityAnalyzer:
             elif isinstance(node, ast.If):
                 # Heuristic for complex logic: Check for nested ifs or long conditions
                 if len(node.body) > 3 or any(isinstance(n, ast.If) for n in node.body) or len(ast.dump(node.test)) > 100:  # type: ignore
-                    # Check for a preceding comment
+                    # Check for a preceding comment, in the copy of the
+                    # file already read at construction. Reopening the
+                    # file for every complex if would reread it once per
+                    # finding and could disagree with the parsed tree.
                     if node.lineno > 1:
-                        with open(self.filename, 'r', encoding='utf-8') as f:
-                            lines = f.readlines()
-                            if node.lineno - 2 >= 0:  # type: ignore
-                                prev_line = lines[node.lineno - 2].strip() # type: ignore
-                                if not prev_line.startswith("#"):
-                                    missing_comments.append((node.lineno, "complex logic", "Missing comment for complex if statement"))
+                        lines = self.source_code.splitlines()
+                        if node.lineno - 2 >= 0:  # type: ignore
+                            prev_line = lines[node.lineno - 2].strip() # type: ignore
+                            if not prev_line.startswith("#"):
+                                missing_comments.append((node.lineno, "complex logic", "Missing comment for complex if statement"))
                     else:
                          missing_comments.append((node.lineno, "complex logic", "Missing comment for complex if statement"))
 
@@ -155,7 +157,13 @@ class CommentQualityAnalyzer:
                             # Simple heuristic: look for comments mentioning variables in the changed line
                             for var in re.findall(r'\b\w+\b', line):  # Find all words in changed line
                                 if var in check_line and len(var) > 2:
-                                    outdated_comments.append((check_line_num + 1, "outdated", f"Possible outdated comment near changed line. Comment might be related to variable: {var}"))
+                                    entry = (check_line_num + 1, "outdated", f"Possible outdated comment near changed line. Comment might be related to variable: {var}")
+                                    # The same comment sits in the window
+                                    # of every matching line near it, so
+                                    # without this guard one comment is
+                                    # reported once per nearby match.
+                                    if entry not in outdated_comments:
+                                        outdated_comments.append(entry)
                                     break  # Only flag the comment once
 
         return outdated_comments
@@ -231,12 +239,3 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 
-# Example Usage:
-# 1. Run the analyzer on a file: python main.py my_code.py
-# 2. Run with a style guide: python main.py my_code.py --style-guide style_guide.json
-# 3. Run with verbose logging: python main.py my_code.py --verbose
-# Example style_guide.json:
-# {
-#   "min_length": 10,
-#   "required_prefix": "TODO:"
-# }
