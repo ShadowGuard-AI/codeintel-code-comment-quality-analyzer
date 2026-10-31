@@ -128,9 +128,12 @@ class CommentQualityAnalyzer:
 
     def identify_outdated_comments(self) -> List[Tuple[int, str, str]]:
         """
-        Identifies outdated or misleading comments based on code changes.  This is a simplified version
-        that searches for comments near changed lines (simulated with regex).  A real implementation
-        would integrate with a version control system.
+        Demonstration outdated comment check, keyed to one example pattern.
+
+        This check searches for comments near a line matching the single
+        hardcoded example pattern (result = val + 5). It does not read
+        code changes, diffs, or version control history, and it does not
+        detect outdated or misleading comments in general.
 
         Returns:
             List[Tuple[int, str, str]]: A list of tuples, where each tuple contains:
@@ -140,7 +143,8 @@ class CommentQualityAnalyzer:
         """
         outdated_comments: List[Tuple[int, str, str]] = []
 
-        # Simulate code changes with a regex pattern.  This is a simplified example.
+        # Demonstration only: one hardcoded example pattern. No code
+        # changes, diffs, or version control history are read here.
         changed_lines_pattern = r"result = val \+ 5" #Example pattern to look for
 
         with open(self.filename, 'r', encoding='utf-8') as f:
@@ -157,7 +161,7 @@ class CommentQualityAnalyzer:
                             # Simple heuristic: look for comments mentioning variables in the changed line
                             for var in re.findall(r'\b\w+\b', line):  # Find all words in changed line
                                 if var in check_line and len(var) > 2:
-                                    entry = (check_line_num + 1, "outdated", f"Possible outdated comment near changed line. Comment might be related to variable: {var}")
+                                    entry = (check_line_num + 1, "outdated", f"Possible outdated comment near the example pattern line. Comment might be related to variable: {var}")
                                     # The same comment sits in the window
                                     # of every matching line near it, so
                                     # without this guard one comment is
