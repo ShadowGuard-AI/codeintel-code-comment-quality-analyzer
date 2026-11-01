@@ -28,6 +28,10 @@ class CommentQualityAnalyzer:
         self.tree = None
 
         try:
+            # This pass opens the file again instead of using the copy I
+            # stored at construction. If the file changes between the two
+            # reads, the line numbers here can point at different text than
+            # the tree based checks above reported on.
             with open(self.filename, 'r', encoding='utf-8') as f:
                 self.source_code = f.read()
             self.tree = ast.parse(self.source_code)
@@ -38,6 +42,9 @@ class CommentQualityAnalyzer:
             logging.error(f"Error reading or parsing file: {self.filename} - {e}")
             raise
     
+    # I read the first body statement by hand instead of calling
+    # ast.get_docstring. That keeps the raw text exactly as written,
+    # including the indentation a style rule might care about.
     def _extract_docstring(self, node: ast.AST) -> str:
         """
         Extracts the docstring from an AST node.
@@ -78,6 +85,9 @@ class CommentQualityAnalyzer:
 
             elif isinstance(node, ast.If):
                 # Heuristic for complex logic: Check for nested ifs or long conditions
+                # I measure the condition by the length of its AST dump, not by
+                # characters in the source. One long name can push a simple test
+                # over this line, so I treat it as a rough flag, not a verdict.
                 if len(node.body) > 3 or any(isinstance(n, ast.If) for n in node.body) or len(ast.dump(node.test)) > 100:  # type: ignore
                     # Check for a preceding comment, in the copy of the
                     # file already read at construction. Reopening the
