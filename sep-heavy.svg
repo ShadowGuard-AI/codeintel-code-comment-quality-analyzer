@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 40" role="img" aria-label="Major separator: a fine ice crack rule in silver across the full width, with single cracks branching from it at wide intervals and ending clean">
+<rect x="0" y="0" width="1200" height="40" fill="#f2f4f0"/>
+<line x1="0" y1="18" x2="1200" y2="18" stroke="#c0c6cc" stroke-width="2"/>
+<g stroke="#c0c6cc" stroke-width="2" fill="none"><path d="M200 18 l22 12 M200 18 l-14 10"/><path d="M600 18 l22 12 M600 18 l-14 10"/><path d="M1000 18 l22 12 M1000 18 l-14 10"/></g>
+</svg>

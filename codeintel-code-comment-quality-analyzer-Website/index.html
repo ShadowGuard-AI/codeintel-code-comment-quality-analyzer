@@ -3,164 +3,97 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Codeintel Code Comment Quality Analyzer: what it is, how it runs, where it stops</title>
-<meta name="description" content="Codeintel Code Comment Quality Analyzer is one of my projects. The README in the repo is short, so this page sticks to what the files themselves show.">
+<title>codeintel-code-comment-quality-analyzer: Functions, Classes, and Complex Blocks</title>
+<meta name="description" content="Evaluates the quality and completeness of code comments. Checks for missing comments on functions, classes, and complex logic blocks, and enforces comment style consistency when a style guide is supplied.">
 <style>
-:root {
-  --bg: #0c1016; --panel: #141a24; --ink: #e8ecf0;
-  --mut: #1b2330;
-  --acc: #d8844a; --acc2: #5eb2a8;
-  --line: #141a24;
-}
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--ink);
-  font-family: 'Book Antiqua', Georgia, serif; line-height: 1.55; }
-code, pre, .mono { font-family: 'Andale Mono', monospace; }
-a { color: var(--acc2); }
-.hero { padding: 3rem 6vw 1rem; }
-.hero img.banner { width: 100%; height: auto; border: 1px solid var(--line);
-  border-radius: 10px; }
-.logo { width: 92px; height: 92px; border-radius: 18px;
-  border: 1px solid var(--line); }
-h1 { font-size: 2.4rem; margin: 0.4em 0 0.1em; }
-h2 { border-bottom: 2px solid var(--acc); padding-bottom: 0.2em;
-  margin-top: 2em; }
-.lede { font-size: 1.15rem; max-width: 62ch; }
-main { padding: 0 6vw 3rem; max-width: 1180px; margin: 0 auto; }
-.grid { display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
-.card { background: var(--panel); border: 1px solid var(--line);
-  border-radius: 12px; padding: 1rem 1.2rem; }
-.card.pop { animation: rise 0.7s ease both; }
-@keyframes rise { from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: none; } }
-pre.code { background: #101014; color: #e8e6df; padding: 1rem 1.2rem;
-  border-radius: 12px; overflow-x: auto; font-size: 0.86rem;
-  border-left: 5px solid var(--acc); }
-table { border-collapse: collapse; width: 100%; }
-td, th { border-bottom: 1px solid var(--line); padding: 0.45rem 0.6rem;
-  text-align: left; }
-.shots { display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-.shots img { width: 100%; height: auto; border: 1px solid var(--line);
-  border-radius: 10px; background: #f4f1e8; }
-footer { padding: 2rem 6vw; border-top: 1px solid var(--line);
-  color: var(--mut); }
-.rail { display: flex; gap: 1.2rem; align-items: flex-start; }
-.rail nav { position: sticky; top: 1rem; min-width: 180px; }
-@media (max-width: 760px) { .rail { flex-direction: column; }
-  .rail nav { position: static; } }
-@media (prefers-reduced-motion: reduce) {
-  .card.pop { animation: none; } * { scroll-behavior: auto; } }
+@font-face{font-family:'Barlow Condensed';src:url('fonts/BarlowCondensed.ttf') format('truetype');}
+@font-face{font-family:'Alegreya Sans';src:url('fonts/AlegreyaSans.ttf') format('truetype');}
+:root{--blue:#16283f;--deep:#0a1220;--white:#f2f4f0;--silver:#c0c6cc;--green:#3fd97f;--ink:#23282a}
+*{box-sizing:border-box}body{margin:0;background:var(--deep);color:var(--ink);font-family:'Alegreya Sans',sans-serif;line-height:1.65}
+h1,h2,h3{font-family:'Barlow Condensed',sans-serif;color:var(--blue);letter-spacing:.02em}
+.hero{background:linear-gradient(180deg,var(--blue),var(--deep) 88%);color:var(--white)}.hero img.heroimg{width:100%;height:54vh;object-fit:cover;display:block}
+.hero .in,main,footer{max-width:1120px;margin:0 auto;padding:1rem 6vw 2rem}.logo{width:210px;background:var(--deep)}
+.hero h1{color:var(--white)}
+nav{display:flex;gap:1rem;flex-wrap:wrap;margin:1.2rem 0}
+.btn{display:inline-block;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;color:var(--blue);background:linear-gradient(180deg,#ffffff,#dfe6ea);border:2px solid var(--silver);border-radius:4px;padding:.7rem 1.25rem;position:relative;transition:background .15s}
+.btn:hover{background:linear-gradient(180deg,#ffffff,#eef4ee)}
+.btn:active{filter:brightness(.88)}
+.btn:focus-visible{outline:3px double var(--silver);outline-offset:3px}
+a{color:var(--blue)}a::before{content:'';display:inline-block;width:13px;height:11px;margin-right:.5em;border:2px solid var(--silver);border-bottom:none;border-radius:6px 6px 0 0;vertical-align:0}
+a:hover{color:#1d5c38}a:hover::before{border-color:var(--green)}
+.btn::before{content:none}
+.plate{background:var(--white);border:1px solid var(--silver);padding:.4rem 1.5rem 1.3rem;margin:1.8rem 0;position:relative}
+.plate .cartouche{position:absolute;top:.9rem;right:1rem;width:16px;height:30px;background:linear-gradient(180deg,var(--green),transparent);opacity:.7}
+pre{background:var(--blue);color:var(--white);padding:1rem;overflow-x:auto}
+.crack{height:20px;margin:1.6rem 0;border-top:2px solid var(--silver)}
+.callout{background:#eef1ee;border:2px solid var(--silver);border-left:8px solid var(--silver);padding:.2rem 1.3rem 1rem;margin:1.3rem 0}
+.missing{color:#1d5c38;font-weight:700;border-left:4px solid var(--silver);padding-left:.8rem}
+.entry{display:flex;gap:1rem;padding:.55rem 0;border-bottom:1px solid rgba(22,40,63,.2)}.entry b{font-family:'Barlow Condensed',sans-serif;font-size:1.12rem;min-width:150px;color:var(--blue)}
+.blank{border-bottom:2px dashed var(--silver);min-height:2.2rem}
+footer{color:var(--white)}footer p{color:var(--white)}
+table{border-collapse:collapse}td,th{padding:.4rem .8rem;border-bottom:1px solid rgba(22,40,63,.2);text-align:left}
 </style>
 </head>
-<body class="layout-grid">
-<!-- This page exists for codeintel-code-comment-quality-analyzer alone: the layout (console-grid),
-     the colors, and the type were picked for this project, not
-     shared with the other project pages. The code block below is
-     copied from the file it names, line for line. If it looks
-     plain, that is because the project is plain, and I would
-     rather the page match the project than dress it up. The one
-     thing I will not do here is oversell: what this project does
-     not do is stated on the page, not hidden from it. -->
+<body>
 <header class="hero">
-  <img class="logo" src="assets/logo.png" alt="Codeintel Code Comment Quality Analyzer logo">
-  <img class="banner" src="assets/banner.png" alt="">
-  <h1>Codeintel Code Comment Quality Analyzer</h1>
-  <p class="mono"><a href="https://github.com/ShadowGuard-AI/codeintel-code-comment-quality-analyzer">github.com/ShadowGuard-AI/codeintel-code-comment-quality-analyzer</a></p>
+<img class="heroimg" src="assets/intro-banner.png" alt="A frozen lake at two in the morning with no lettering: black ice with large cirrus white crack lines in the foreground, a tripod and a weighted log board on the flat dark lake, a thermos steaming on its stone at the right edge, snow banks on the far shore, and a green aurora curtain across the whole upper half">
+<div class="in">
+<img class="logo" src="assets/logo.png" alt="One tall narrow fold of green aurora light with a ragged lower edge over black ice, the top of a tripod head small below it, and the name codeintel-code-comment-quality-analyzer in Barlow Condensed in cirrus white underneath">
+<h1>codeintel-code-comment-quality-analyzer</h1>
+<p>A forecast log kept on the ice, one entry per watch. Somebody has come out in the night to look at one thing properly, and to write down only what actually answers back.</p>
+<nav>
+<a class="btn" href="#work">Check for Missing Comments</a>
+<a class="btn" href="#params">Load This Style Guide</a>
+<a class="btn" href="#params">Turn On Verbose Logging</a>
+<a class="btn" href="#params">Show Help</a>
+</nav>
+</div>
 </header>
-
 <main>
-  <section class="rail">
-    <nav aria-label="on this page">
-      <p class="mono"><a href="#run">Run it</a><br>
-      <a href="#files">The files</a><br>
-      <a href="#sheets">The sheets</a><br>
-      <a href="https://github.com/ShadowGuard-AI/codeintel-code-comment-quality-analyzer">The repo</a></p>
-    </nav>
-    <div>
-      <p class="lede">Codeintel Code Comment Quality Analyzer is one of my projects. The README in the repo is short, so this page sticks to what the files themselves show.</p>
-      <div class="grid">
-        <div class="card pop"><h3>What it is</h3>
-          <p>Codeintel Code Comment Quality Analyzer: 5 files, 261 counted
-          lines across Python 241, Markdown 18, Text 2. One job, done in the
-          open, in files you can read.</p></div>
-        <div class="card pop"><h3>The biggest piece</h3>
-          <p><code>main.py</code> carries the most
-          lines. If the project grows, that file is where the growth
-          lands first, for better or worse.</p></div>
-        <div class="card pop"><h3>The honest gap</h3>
-          <p>No test files yet. That is the honest gap, and the roadmap in the visuals folder says what the first one should cover.</p></div>
-      </div>
-      <section id="run">
-        <h2>Run it</h2>
-        <p>The repo README has the exact commands for this one. The
-        shape is the shape for most of my projects: clone it, read the
-        top file first so you know what will happen, then run it on
-        something you do not mind breaking.</p>
-        <p class="mono">$ git clone https://github.com/ShadowGuard-AI/codeintel-code-comment-quality-analyzer.git<br>$ cd codeintel-code-comment-quality-analyzer</p>
-      </section>
-      
-  <section aria-label="real code">
-    <h2>The code, as it sits in the repo</h2>
-    <p>From <code>main.py</code>, line 10 on. I did
-    not tidy it for the page. What you see is what the file has.</p>
-    <pre class="code"><code>logging.basicConfig(level=logging.INFO, format=&#x27;%(asctime)s - %(levelname)s - %(message)s&#x27;)
-
-class CommentQualityAnalyzer:
-    &quot;&quot;&quot;
-    Analyzes the quality and completeness of code comments in Python files.
-    &quot;&quot;&quot;
-
-    def __init__(self, filename: str, style_guide: Dict[str, Any] = None) -&gt; None:
-        &quot;&quot;&quot;
-        Initializes the CommentQualityAnalyzer with the filename and optional style guide.
-
-        Args:
-            filename (str): The path to the Python file to analyze.
-            style_guide (Dict[str, Any], optional): A dictionary containing style guide rules. Defaults to None.
-        &quot;&quot;&quot;
-        self.filename = filename
-        self.style_guide = style_guide if style_guide else {}
-        self.source_code = &quot;&quot;
-        self.tree = None
-
-        try:
-            with open(self.filename, &#x27;r&#x27;, encoding=&#x27;utf-8&#x27;) as f:</code></pre>
-  </section>
-      <section id="files">
-        <h2>The files that matter</h2>
-        <table><tr><th>File</th><th>Lines</th></tr>
-        <tr><td><code>main.py</code></td><td>241</td></tr>
-        <tr><td><code>README.md</code></td><td>18</td></tr>
-        <tr><td><code>requirements.txt</code></td><td>2</td></tr>
-        <tr><td><code>banner.png</code></td><td>0</td></tr>
-        <tr><td><code>logo.png</code></td><td>0</td></tr>
-        </table>
-        <p>Names doing the work: <span class="mono">CommentQualityAnalyzer, setup_argparse, main, __init__, _extract_docstring, check_missing_comments, enforce_comment_style_consistency, identify_outdated_comments</span>.</p>
-      </section>
-      <section id="sheets">
-        <h2>Drawn by hand</h2>
-        <p>I sketch my projects on notebook paper so I have to
-        understand them well enough to draw them. The full set,
-        with the counts and how they were counted, is the
-        <a href="https://github.com/ShadowGuard-AI/codeintel-code-comment-quality-analyzer/tree/main/codeintel-code-comment-quality-analyzer-Visuals">codeintel-code-comment-quality-analyzer-Visuals</a>
-        folder in the repo. Nothing is drawn over the binder holes.
-        That is a rule, not a style.</p>
-        <div class="shots">
-          <img src="assets/architecture.png" alt="Hand drawn architecture sheet for Codeintel Code Comment Quality Analyzer">
-          <img src="assets/flowchart.png" alt="Hand drawn flowchart sheet for Codeintel Code Comment Quality Analyzer">
-          <img src="assets/product-map.png" alt="Hand drawn product map sheet for Codeintel Code Comment Quality Analyzer">
-        </div>
-      </section>
-    </div>
-  </section>
+<section class="plate" id="work"><span class="cartouche"></span><h2>Functions, Classes, and Complex Blocks</h2>
+<p>codeintel-code-comment-quality-analyzer evaluates the quality and completeness of code comments. It checks for missing comments on functions, classes, and complex logic blocks, and enforces comment style consistency when a style guide is supplied. It uses AST analysis and pattern matching.</p>
+<h2>Style Only When a Guide Is Supplied</h2>
+<p>The style consistency check turns on only when a style guide is supplied. Without one, the watch is for missing comments alone.</p>
+<div class="callout"><h3>A Demonstration, Not a General Detector</h3>
+<p>The README's own limit on its most ambitious claim, printed at full size because the file states that limit with unusual care: the outdated comment detection is a demonstration keyed to one example pattern, a line matching result = val + 5, with a nearby comment mentioning a word from that line; it does not read code changes, diffs, or version control history, and it does not detect outdated or misleading comments in general.</p></div>
+</section>
+<div class="crack"></div>
+<section class="plate"><span class="cartouche"></span><h2>Getting the Code, as Printed</h2>
+<pre>git clone https://github.com/ShadowStrikeHQ/codeintel-code-comment-quality-analyzer</pre>
+<div class="callout"><h3>The Address Names Another Organisation</h3>
+<p>The single clone line is printed as printed, inside this fault callout, because the address names ShadowStrikeHQ in place of ShadowGuard-AI. No change of directory step and no dependency step is added here, because the README gives neither.</p></div>
+</section>
+<div class="crack"></div>
+<section class="plate" id="usage"><span class="cartouche"></span><h2>Usage, the Placeholder Line</h2>
+<pre>./codeintel-code-comment-quality-analyzer [params]</pre>
+<p>That line is a placeholder and not a true usage line, and this leaf states the gap plainly: the README lists no positional argument at all, so a reader following the README alone is never told what file or directory the analyser is to be run on, and no worked example repairs the omission anywhere in the file. The printed line is kept as the README gives it, and the missing argument is named as a missing true usage line rather than filled in by invention.</p>
+<h2>What the README Never Names</h2>
+<p class="missing">The target of the analysis: the one fact a new reader needs first, what to point the analyser at, is absent from the file.</p>
+</section>
+<div class="crack"></div>
+<section class="plate" id="params"><span class="cartouche"></span><h2>The Register of Parameters, Three Entries</h2>
+<div class="entry"><b>-h</b><span>Shows the help message and exits.</span></div>
+<div class="entry"><b>--style-guide</b><span>Takes the path to a JSON file containing comment style guide rules, the guide whose supply turns on the style consistency check described on the first leaf.</span></div>
+<div class="entry"><b>--verbose</b><span>Enables verbose logging.</span></div>
+<div class="entry blank"><b></b><span>A fourth ruled line, left blank in the register: the positional argument that does not appear in the list, the target of the analysis, which the run cannot start without and the README never names.</span></div>
+</section>
+<div class="crack"></div>
+<section class="plate"><span class="cartouche"></span><h2>What a Run Actually Does</h2>
+<p>Functions, classes, and complex logic blocks are checked for missing comments, and where a style guide has been supplied, comment style is checked for consistency against it. The method is stated as the README states it: AST analysis and pattern matching.</p>
+<h2>One Example Pattern Only</h2>
+<p>Outdated comment detection in this program is the one example pattern only, result = val + 5 with a nearby comment mentioning a word from that line, and general outdated or misleading comments are not detected. No reader leaves this leaf with the wider claim.</p>
+<p><a href="https://github.com/ShadowGuard-AI/codeintel-code-comment-quality-analyzer">The repository on GitHub</a></p>
+</section>
+<div class="crack"></div>
+<section class="plate"><span class="cartouche"></span><h2>Licence, the Closing Entry</h2>
+<pre>Copyright (c) ShadowStrikeHQ</pre>
+<div class="callout"><h3>The Address Names Another Organisation</h3>
+<p>The licence line as the README prints it, set inside this fault callout for the same wrong organisation name as the clone line, with the plain note that the README names no licence in that line.</p></div>
+</section>
 </main>
 <footer>
-  <p>Codeintel Code Comment Quality Analyzer is one of my projects. This page was written
-  from the repo itself on 2026-10-30: the counts are the
-  repo's counts, the code is the repo's code, and the gaps are the
-  repo's gaps.</p>
+<img src="assets/banner.png" alt="A frozen lake drawn wide at two in the morning: black ice with fine crack lines, snow banked at the far shore, a tripod, a thermos steaming on its stone, a folding board with its weighted log carrying the entered name, and a green aurora curtain unfolding above with its faint reflection on the ice" style="width:100%">
+<p>codeintel-code-comment-quality-analyzer. The log closed on a night in which the watcher recorded only what the sky actually did.</p>
 </footer>
 </body>
 </html>

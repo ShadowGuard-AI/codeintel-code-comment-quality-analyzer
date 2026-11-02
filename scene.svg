@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" role="img" aria-label="The frozen lake in three depths: in the far depth the aurora curtain itself shifts its folds and ripples at its lower edge in a long uneven rhythm, brightening by small stages and dimming again, in the middle depth the curtain reflection on the black ice answers a moment later and more faintly with its green pool widening and narrowing while the tripod, the log board, and the snow banks do not move at all, and in the near depth the thermos stands still on its stone at the lower right while its steam rises in the still air, thins, and rises again">
+<rect x="0" y="0" width="1200" height="300" fill="#0a1220"/>
+<g>
+<animate attributeName="opacity" values="0.75;1;0.85;1;0.75" keyTimes="0;0.3;0.55;0.8;1" dur="26s" repeatCount="indefinite"/>
+<g fill="#3fd97f">
+<polygon points="120,0 210,0 188,128 142,118" opacity="0.5"/>
+<polygon points="230,0 330,0 300,142 258,130" opacity="0.42"/>
+<polygon points="350,0 440,0 420,122 372,134" opacity="0.52"/>
+<polygon points="470,0 566,0 540,146 496,132" opacity="0.44"/>
+<polygon points="590,0 680,0 656,124 612,136" opacity="0.5"/>
+<polygon points="710,0 806,0 780,140 734,128" opacity="0.43"/>
+<polygon points="830,0 920,0 898,120 852,132" opacity="0.51"/>
+</g>
+<g stroke="#8cf4b4" stroke-width="3" fill="none">
+<path d="M142 118 q120 18 178 -6"><animate attributeName="d" values="M142 118 q120 18 178 -6;M142 124 q120 8 178 2;M142 118 q120 18 178 -6" dur="13s" repeatCount="indefinite"/></path>
+<path d="M496 132 q130 16 178 -4"><animate attributeName="d" values="M496 132 q130 16 178 -4;M496 126 q130 10 178 2;M496 132 q130 16 178 -4" dur="17s" repeatCount="indefinite"/></path>
+</g>
+</g>
+<polygon points="0,182 260,172 560,180 880,170 1200,178 1200,192 0,192" fill="#c0c6cc"/>
+<rect x="0" y="192" width="1200" height="108" fill="#101c2e"/>
+<g fill="#227050">
+<polygon points="180,198 300,198 282,252 204,246" opacity="0.35"><animate attributeName="opacity" values="0.25;0.45;0.25" keyTimes="0;0.55;1" dur="26s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="scale" values="1 1;1.12 1;1 1" dur="26s" repeatCount="indefinite"/></polygon>
+<polygon points="520,198 650,198 628,250 548,244" opacity="0.32"><animate attributeName="opacity" values="0.22;0.42;0.22" keyTimes="0;0.55;1" dur="26s" repeatCount="indefinite"/></polygon>
+</g>
+<g stroke="#f2f4f0" stroke-width="1.5"><path d="M60 268 l150 -12 l120 14"/><path d="M760 258 l170 -10 l140 12"/></g>
+<g stroke="#0c0d0f" stroke-width="4"><line x1="420" y1="196" x2="402" y2="238"/><line x1="420" y1="196" x2="438" y2="238"/><line x1="420" y1="196" x2="421" y2="238"/></g>
+<polygon points="408,168 436,164 438,180 410,184" fill="#14161a"/>
+<rect x="520" y="206" width="86" height="26" fill="#5f5342"/>
+<rect x="530" y="196" width="66" height="16" fill="#f2f4f0"/>
+<g>
+<polygon points="986,300 994,262 1052,258 1062,300" fill="#585e66"/>
+<rect x="1006" y="224" width="30" height="38" fill="#34383c"/>
+<rect x="1011" y="212" width="20" height="13" fill="#c0c6cc"/>
+<g stroke="#f2f4f0" stroke-width="2" fill="none" opacity="0.8">
+<path d="M1016 206 q-6 -14 2 -24"><animate attributeName="opacity" values="0.9;0.25;0.9" dur="10s" repeatCount="indefinite"/></path>
+<path d="M1028 206 q-6 -16 2 -28"><animate attributeName="opacity" values="0.25;0.9;0.25" dur="10s" repeatCount="indefinite"/></path>
+</g>
+</g>
+</svg>
