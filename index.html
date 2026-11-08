@@ -3,97 +3,96 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>codeintel-code-comment-quality-analyzer: Functions, Classes, and Complex Blocks</title>
-<meta name="description" content="Evaluates the quality and completeness of code comments. Checks for missing comments on functions, classes, and complex logic blocks, and enforces comment style consistency when a style guide is supplied.">
+<title>codeintel-code-comment-quality-analyzer: The Scriptorium Desk</title>
 <style>
-@font-face{font-family:'Barlow Condensed';src:url('fonts/BarlowCondensed.ttf') format('truetype');}
-@font-face{font-family:'Alegreya Sans';src:url('fonts/AlegreyaSans.ttf') format('truetype');}
-:root{--blue:#16283f;--deep:#0a1220;--white:#f2f4f0;--silver:#c0c6cc;--green:#3fd97f;--ink:#23282a}
-*{box-sizing:border-box}body{margin:0;background:var(--deep);color:var(--ink);font-family:'Alegreya Sans',sans-serif;line-height:1.65}
-h1,h2,h3{font-family:'Barlow Condensed',sans-serif;color:var(--blue);letter-spacing:.02em}
-.hero{background:linear-gradient(180deg,var(--blue),var(--deep) 88%);color:var(--white)}.hero img.heroimg{width:100%;height:54vh;object-fit:cover;display:block}
-.hero .in,main,footer{max-width:1120px;margin:0 auto;padding:1rem 6vw 2rem}.logo{width:210px;background:var(--deep)}
-.hero h1{color:var(--white)}
-nav{display:flex;gap:1rem;flex-wrap:wrap;margin:1.2rem 0}
-.btn{display:inline-block;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;color:var(--blue);background:linear-gradient(180deg,#ffffff,#dfe6ea);border:2px solid var(--silver);border-radius:4px;padding:.7rem 1.25rem;position:relative;transition:background .15s}
-.btn:hover{background:linear-gradient(180deg,#ffffff,#eef4ee)}
-.btn:active{filter:brightness(.88)}
-.btn:focus-visible{outline:3px double var(--silver);outline-offset:3px}
-a{color:var(--blue)}a::before{content:'';display:inline-block;width:13px;height:11px;margin-right:.5em;border:2px solid var(--silver);border-bottom:none;border-radius:6px 6px 0 0;vertical-align:0}
-a:hover{color:#1d5c38}a:hover::before{border-color:var(--green)}
-.btn::before{content:none}
-.plate{background:var(--white);border:1px solid var(--silver);padding:.4rem 1.5rem 1.3rem;margin:1.8rem 0;position:relative}
-.plate .cartouche{position:absolute;top:.9rem;right:1rem;width:16px;height:30px;background:linear-gradient(180deg,var(--green),transparent);opacity:.7}
-pre{background:var(--blue);color:var(--white);padding:1rem;overflow-x:auto}
-.crack{height:20px;margin:1.6rem 0;border-top:2px solid var(--silver)}
-.callout{background:#eef1ee;border:2px solid var(--silver);border-left:8px solid var(--silver);padding:.2rem 1.3rem 1rem;margin:1.3rem 0}
-.missing{color:#1d5c38;font-weight:700;border-left:4px solid var(--silver);padding-left:.8rem}
-.entry{display:flex;gap:1rem;padding:.55rem 0;border-bottom:1px solid rgba(22,40,63,.2)}.entry b{font-family:'Barlow Condensed',sans-serif;font-size:1.12rem;min-width:150px;color:var(--blue)}
-.blank{border-bottom:2px dashed var(--silver);min-height:2.2rem}
-footer{color:var(--white)}footer p{color:var(--white)}
-table{border-collapse:collapse}td,th{padding:.4rem .8rem;border-bottom:1px solid rgba(22,40,63,.2);text-align:left}
+@font-face { font-family: "Metamorphous"; src: url("fonts/Metamorphous-400.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "Sorts Mill Goudy"; src: url("fonts/SortsMillGoudy-400.woff2") format("woff2"); font-weight: 400; }
+:root {
+  --paper: #faf6ec; --cream: #f0e8d2; --ink: #322b20; --soft: #6d6152;
+  --accent: #7a2e22; --deep: #4a3826; --line: #ddd0b4; --card: #ffffff;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--cream); color: var(--ink); font-family: "Sorts Mill Goudy", serif; line-height: 1.55; }
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 20px 64px; }
+header.hero { text-align: center; padding: 52px 0 8px; }
+img.hero-logo { width: min(430px, 82vw); border-radius: 10px; box-shadow: 0 10px 34px rgba(40,32,24,.22); }
+h1, h2 { font-family: "Metamorphous", serif; line-height: 1.15; }
+h1 { font-size: clamp(26px, 5vw, 44px); margin: 26px 0 6px; }
+.tagline { color: var(--soft); font-size: 19px; margin: 0 auto; max-width: 680px; }
+.btns { margin: 22px 0 6px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+a.btn { font-family: "Metamorphous", serif; text-decoration: none; padding: 11px 22px; border-radius: 999px; border: 2px solid var(--accent); color: var(--accent); background: transparent; }
+a.btn.solid { background: var(--deep); border-color: var(--deep); color: #fff; }
+figure { margin: 30px 0; }
+figure img { width: 100%; border-radius: 10px; display: block; box-shadow: 0 8px 28px rgba(40,32,24,.18); }
+figcaption { color: var(--soft); font-size: 15px; text-align: center; margin-top: 9px; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin: 34px 0; }
+.fact { background: var(--card); border: 1px solid var(--line); border-top: 5px solid var(--accent); border-radius: 8px; padding: 14px 16px; }
+.fact b { display: block; font-family: "Metamorphous", serif; font-size: 15px; letter-spacing: .04em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+section { margin: 38px 0; }
+h2 { font-size: 27px; margin: 0 0 12px; border-bottom: 2px solid var(--line); padding-bottom: 7px; }
+code, pre { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+pre { background: #2b2115; color: #f3ecdd; padding: 15px 18px; border-radius: 8px; overflow-x: auto; font-size: 14.5px; }
+table { border-collapse: collapse; width: 100%; background: var(--card); }
+th, td { border: 1px solid var(--line); padding: 9px 12px; text-align: left; vertical-align: top; }
+th { font-family: "Metamorphous", serif; background: var(--cream); }
+.hold { background: #fdf3ec; border: 1px solid #e8c9b8; border-left: 6px solid var(--accent); border-radius: 8px; padding: 16px 20px; }
+.hold h2 { border: none; padding: 0; }
+.hold ul { margin: 8px 0 4px; padding-left: 20px; }
+footer { margin-top: 52px; border-top: 2px solid var(--line); padding-top: 16px; color: var(--soft); font-size: 14.5px; text-align: center; }
 </style>
 </head>
 <body>
+<div class="wrap">
 <header class="hero">
-<img class="heroimg" src="assets/intro-banner.png" alt="A frozen lake at two in the morning with no lettering: black ice with large cirrus white crack lines in the foreground, a tripod and a weighted log board on the flat dark lake, a thermos steaming on its stone at the right edge, snow banks on the far shore, and a green aurora curtain across the whole upper half">
-<div class="in">
-<img class="logo" src="assets/logo.png" alt="One tall narrow fold of green aurora light with a ragged lower edge over black ice, the top of a tripod head small below it, and the name codeintel-code-comment-quality-analyzer in Barlow Condensed in cirrus white underneath">
-<h1>codeintel-code-comment-quality-analyzer</h1>
-<p>A forecast log kept on the ice, one entry per watch. Somebody has come out in the night to look at one thing properly, and to write down only what actually answers back.</p>
-<nav>
-<a class="btn" href="#work">Check for Missing Comments</a>
-<a class="btn" href="#params">Load This Style Guide</a>
-<a class="btn" href="#params">Turn On Verbose Logging</a>
-<a class="btn" href="#params">Show Help</a>
-</nav>
-</div>
+  <img class="hero-logo" src="assets/logo.png" alt="An open manuscript page seen close, its main text soft and unreadable and its wide margins filled with cursive note strokes that never resolve into words">
+  <h1>codeintel-code-comment-quality-analyzer</h1>
+  <p class="tagline">The Scriptorium Desk. A command line analyzer that reads one Python file's comments, finds where they are missing, checks them against a supplied style guide, and flags the notes that may have gone stale beside the one example line it knows.</p>
+  <div class="btns">
+    <a class="btn solid" href="https://github.com/ShadowGuard-AI/codeintel-code-comment-quality-analyzer">The repository</a>
+    <a class="btn" href="https://github.com/ShadowGuard-AI/codeintel-code-comment-quality-analyzer/blob/main/main.py">main.py</a>
+  </div>
 </header>
-<main>
-<section class="plate" id="work"><span class="cartouche"></span><h2>Functions, Classes, and Complex Blocks</h2>
-<p>codeintel-code-comment-quality-analyzer evaluates the quality and completeness of code comments. It checks for missing comments on functions, classes, and complex logic blocks, and enforces comment style consistency when a style guide is supplied. It uses AST analysis and pattern matching.</p>
-<h2>Style Only When a Guide Is Supplied</h2>
-<p>The style consistency check turns on only when a style guide is supplied. Without one, the watch is for missing comments alone.</p>
-<div class="callout"><h3>A Demonstration, Not a General Detector</h3>
-<p>The README's own limit on its most ambitious claim, printed at full size because the file states that limit with unusual care: the outdated comment detection is a demonstration keyed to one example pattern, a line matching result = val + 5, with a nearby comment mentioning a word from that line; it does not read code changes, diffs, or version control history, and it does not detect outdated or misleading comments in general.</p></div>
+<figure>
+  <img src="assets/intro-banner.png" alt="The red ruled margin close up, the corrector's hand and quill at the frame edge, the manuscript's note strokes soft and unreadable">
+  <figcaption>One margin note, ruled in red against the house style.</figcaption>
+</figure>
+
+<div class="facts">
+  <div class="fact"><b>Input</b>One Python file per run, through a positional filename</div>
+  <div class="fact"><b>Missing comments</b>Found on the AST for functions, classes, and complex logic blocks</div>
+  <div class="fact"><b>Style</b>Checked only when a style guide is supplied, honouring min_length and required_prefix on whole line comments</div>
+  <div class="fact"><b>Dependencies</b>None. The standard library is all there is; requirements.txt is a comment saying so</div>
+</div>
+<section>
+  <h2>Usage</h2>
+  <pre>python3 main.py FILE [--style-guide RULES.json] [--verbose]</pre>
+  <p>The README parameter list names no positional argument at all, so the file never says what the analyzer is to be run on. The invocation above is the true one: one Python file per run. A file that cannot be read or parsed exits 1.</p>
+<table>
+    <tr><th>Option</th><th>What it does</th></tr>
+    <tr><td><code>FILE</code></td><td>The one Python file to evaluate.</td></tr>
+    <tr><td><code>--style-guide</code></td><td>A JSON rules file. Style consistency runs only when one is supplied; the honoured keys are min_length and required_prefix, applied to whole line comments.</td></tr>
+    <tr><td><code>--verbose</code></td><td>Verbose output.</td></tr>
+  </table>
 </section>
-<div class="crack"></div>
-<section class="plate"><span class="cartouche"></span><h2>Getting the Code, as Printed</h2>
-<pre>git clone https://github.com/ShadowStrikeHQ/codeintel-code-comment-quality-analyzer</pre>
-<div class="callout"><h3>The Address Names Another Organisation</h3>
-<p>The single clone line is printed as printed, inside this fault callout, because the address names ShadowStrikeHQ in place of ShadowGuard-AI. No change of directory step and no dependency step is added here, because the README gives neither.</p></div>
+<figure>
+  <img src="assets/banner.png" alt="A scriptorium desk with an open manuscript whose wide margins carry dense soft note strokes, a corrector ruling a line in red beneath one margin note, the style sheet open beside the book and oak desks running soft behind">
+  <figcaption>The scriptorium: margin notes read against the house rule for how notes are written.</figcaption>
+</figure>
+<section class="hold">
+  <h2>The outdated check, stated plainly</h2>
+  <ul>
+    <li>The third check is a demonstration, and its own docstring says so. It searches for lines matching the single hardcoded example pattern result = val + 5.</li>
+    <li>Comments within three lines of a match that mention a word from that line are flagged, each flagged once.</li>
+    <li>It reads no code changes, no diffs, and no version control history, and it does not detect outdated or misleading comments in general.</li>
+  </ul>
 </section>
-<div class="crack"></div>
-<section class="plate" id="usage"><span class="cartouche"></span><h2>Usage, the Placeholder Line</h2>
-<pre>./codeintel-code-comment-quality-analyzer [params]</pre>
-<p>That line is a placeholder and not a true usage line, and this leaf states the gap plainly: the README lists no positional argument at all, so a reader following the README alone is never told what file or directory the analyser is to be run on, and no worked example repairs the omission anywhere in the file. The printed line is kept as the README gives it, and the missing argument is named as a missing true usage line rather than filled in by invention.</p>
-<h2>What the README Never Names</h2>
-<p class="missing">The target of the analysis: the one fact a new reader needs first, what to point the analyser at, is absent from the file.</p>
+<section>
+  <h2>Requirements</h2>
+  <p>Python 3 with its standard library. Nothing to install.</p>
 </section>
-<div class="crack"></div>
-<section class="plate" id="params"><span class="cartouche"></span><h2>The Register of Parameters, Three Entries</h2>
-<div class="entry"><b>-h</b><span>Shows the help message and exits.</span></div>
-<div class="entry"><b>--style-guide</b><span>Takes the path to a JSON file containing comment style guide rules, the guide whose supply turns on the style consistency check described on the first leaf.</span></div>
-<div class="entry"><b>--verbose</b><span>Enables verbose logging.</span></div>
-<div class="entry blank"><b></b><span>A fourth ruled line, left blank in the register: the positional argument that does not appear in the list, the target of the analysis, which the run cannot start without and the README never names.</span></div>
-</section>
-<div class="crack"></div>
-<section class="plate"><span class="cartouche"></span><h2>What a Run Actually Does</h2>
-<p>Functions, classes, and complex logic blocks are checked for missing comments, and where a style guide has been supplied, comment style is checked for consistency against it. The method is stated as the README states it: AST analysis and pattern matching.</p>
-<h2>One Example Pattern Only</h2>
-<p>Outdated comment detection in this program is the one example pattern only, result = val + 5 with a nearby comment mentioning a word from that line, and general outdated or misleading comments are not detected. No reader leaves this leaf with the wider claim.</p>
-<p><a href="https://github.com/ShadowGuard-AI/codeintel-code-comment-quality-analyzer">The repository on GitHub</a></p>
-</section>
-<div class="crack"></div>
-<section class="plate"><span class="cartouche"></span><h2>Licence, the Closing Entry</h2>
-<pre>Copyright (c) ShadowStrikeHQ</pre>
-<div class="callout"><h3>The Address Names Another Organisation</h3>
-<p>The licence line as the README prints it, set inside this fault callout for the same wrong organisation name as the clone line, with the plain note that the README names no licence in that line.</p></div>
-</section>
-</main>
 <footer>
-<img src="assets/banner.png" alt="A frozen lake drawn wide at two in the morning: black ice with fine crack lines, snow banked at the far shore, a tripod, a thermos steaming on its stone, a folding board with its weighted log carrying the entered name, and a green aurora curtain unfolding above with its faint reflection on the ice" style="width:100%">
-<p>codeintel-code-comment-quality-analyzer. The log closed on a night in which the watcher recorded only what the sky actually did.</p>
+<p>The README of codeintel-code-comment-quality-analyzer closes with a copyright line naming ShadowStrikeHQ, and its clone URL names the same stale org; the repository carries a separate LICENSE file headed MIT License. Site type is set in Metamorphous and Sorts Mill Goudy, self-hosted under the SIL Open Font License.</p>
 </footer>
+</div>
 </body>
 </html>
