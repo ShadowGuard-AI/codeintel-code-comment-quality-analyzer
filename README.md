@@ -1,11 +1,11 @@
-![A frozen lake at two in the morning with no lettering: black ice with large cirrus white crack lines in the foreground, a tripod and a weighted log board on the flat dark lake, a thermos steaming on its stone at the right edge, snow banks on the far shore, and a green aurora curtain across the whole upper half](intro-banner.png)
+![The red ruled margin close up, the corrector's hand and quill at the frame edge, the manuscript's note strokes soft and unreadable](intro-banner.png)
 
 
 # codeintel-Code-Comment-Quality-Analyzer
 
-![A frozen lake drawn wide at two in the morning: black ice with fine crack lines, snow banked at the far shore, a tripod with its camera pointed at the sky, a thermos steaming on its flat stone, a folding board with its weighted log carrying codeintel-code-comment-quality-analyzer as the entered subject of the watch, and a green aurora curtain unfolding above with its faint reflection on the ice](banner.png)
+![A scriptorium desk with an open manuscript whose wide margins carry dense soft note strokes, a corrector ruling a line in red beneath one margin note, the style sheet open beside the book and oak desks running soft behind](banner.png)
 
-![One tall narrow fold of green aurora light with a ragged lower edge over black ice, the top of a tripod head small below it, and the name underneath in cirrus white, the heading plate](logo.png)
+![An open manuscript page seen close, its main text soft and unreadable and its wide margins filled with cursive note strokes that never resolve into words, the heading plate](logo.png)
 
 ![The frozen lake in three depths: the aurora curtain shifts its folds and ripples at its lower edge in a long uneven rhythm in the far depth, its reflection answers on the black ice a moment later and more faintly in the middle depth while the tripod, the log board, and the snow banks do not move, and the thermos steam rises, thins, and rises again in the near depth](scene.svg)
 
